@@ -21,7 +21,7 @@ def noko_for(url)
   # Nokogiri::HTML(open(url).read, nil, 'utf-8')
 end
 
-def scrape_page(url)
+def scrape_page(gender, url)
   noko = noko_for(url)
   puts url.to_s.yellow
 
@@ -43,6 +43,7 @@ def scrape_page(url)
       party: div.css('#field_31 span:nth-child(2)').text,
       area_id: area_id,
       area: wilaya,
+      gender: gender,
       image: div.css('img/@src').text,
       term: 7,
       source: person_url,
@@ -51,17 +52,10 @@ def scrape_page(url)
     puts data
     # ScraperWiki.save_sqlite([:id, :term], data)
   end
-  return noko
+  next_page = noko.css('a[@title="Suivant"]/@href').text
+  scrape_page(gender, URI.join(url, next_page)) unless next_page.to_s.empty?
 end
 
-init = scrape_page('http://www.apn.dz/fr/les-membres?searchcondition=2&cat_id=83&cf31=&cf36=&cf38=&cf40=&Itemid=715&option=com_mtree&task=listall&sort=link_name')
-
-# find last results page (currently 23)
-last = init.css('.pagination-list a/@href').last.text
-last = last.gsub(/(.*)page(\d+)(.*)/, '\\2').to_i
-
-# paginate through (omitting page 1)
-for i in (2..last).to_a
-  p = "http://www.apn.dz/fr/les-membres/all/page" + i.to_s + "?searchcondition=2&sort=link_name"
-  scrape_page(p)
+%w(Homme Femme).each do |gender|
+  scrape_page(gender, 'http://www.apn.dz/fr/les-membres?sort=link_name&task=listall&cf38=%s' % gender)
 end
