@@ -26,16 +26,17 @@ def scrape_page(url)
   puts url.to_s.yellow
 
   noko.css('div.listing-summary').each do |div|
+    person_url = div.css('h3 a/@href').text
+
     data = {
-      # do -not- use .split("/").last on id: URL structure varies for national
-      # MPs and for those representing overseas constituencies
-      id: div.css('h3 a/@href').text,
+      id: person_url.split("/").last.split("-").first,
       name: div.css('h3').text.tidy,
       type: div.css('.category a').text,
       party: div.css('#field_31 span:nth-child(2)').text,
       constituency: div.css('.fields .row0:nth-child(2) span:nth-child(2)').text.tidy,
       image: div.css('img/@src').text,
       term: 7,
+      source: person_url,
     }
     # TODO: activate ScraperWiki call
     puts data
