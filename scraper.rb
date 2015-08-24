@@ -28,12 +28,21 @@ def scrape_page(url)
   noko.css('div.listing-summary').each do |div|
     person_url = div.css('h3 a/@href').text
 
+    area_field = div.css('#field_36').empty? ? 40 : 36
+    wilaya_id, wilaya = div.css("#field_#{area_field} .output").text.split(/-\s+/, 2)
+    if area_field == 36
+      area_id = "ocd-division/country:dz/wilayah:%d" % wilaya_id
+    else
+      area_id = "ocd-division/country:dz/zone:%s" % wilaya_id[/-(\d+)/, 1]
+    end
+
     data = {
       id: person_url.split("/").last.split("-").first,
       name: div.css('h3').text.tidy,
       type: div.css('.category a').text,
       party: div.css('#field_31 span:nth-child(2)').text,
-      constituency: div.css('.fields .row0:nth-child(2) span:nth-child(2)').text.tidy,
+      area_id: area_id,
+      area: wilaya,
       image: div.css('img/@src').text,
       term: 7,
       source: person_url,
