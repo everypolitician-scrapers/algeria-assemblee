@@ -26,7 +26,6 @@ def scrape_page(gender, url)
   puts url.to_s.yellow
 
   noko.css('div.listing-summary').each do |div|
-    person_url = div.css('h3 a/@href').text
 
     area_field = div.css('#field_36').empty? ? 40 : 36
     wilaya_id, wilaya = div.css("#field_#{area_field} .output").text.split(/-\s+/, 2)
@@ -37,7 +36,7 @@ def scrape_page(gender, url)
     end
 
     data = {
-      id: person_url.split("/").last.split("-").first,
+      id: div.attr('data-link-id'),
       name: div.css('h3').text.tidy,
       type: div.css('.category a').text,
       party: div.css('#field_31 span:nth-child(2)').text,
@@ -46,7 +45,7 @@ def scrape_page(gender, url)
       gender: gender,
       image: div.css('img/@src').text,
       term: 7,
-      source: person_url,
+      source: URI.join(url, div.css('h3 a/@href').text).to_s,
     }
     # TODO: activate ScraperWiki call
     puts data
