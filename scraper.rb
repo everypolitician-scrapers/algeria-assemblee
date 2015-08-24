@@ -23,7 +23,7 @@ end
 
 def scrape_page(gender, url)
   noko = noko_for(url)
-  puts url.to_s.yellow
+  puts url.to_s
 
   noko.css('div.listing-summary').each do |div|
 
@@ -47,9 +47,8 @@ def scrape_page(gender, url)
       term: 7,
       source: URI.join(url, div.css('h3 a/@href').text).to_s,
     }
-    # TODO: activate ScraperWiki call
-    puts data
-    # ScraperWiki.save_sqlite([:id, :term], data)
+    # puts data
+    ScraperWiki.save_sqlite([:id, :term], data)
   end
   next_page = noko.css('a[@title="Suivant"]/@href').text
   scrape_page(gender, URI.join(url, next_page)) unless next_page.to_s.empty?
