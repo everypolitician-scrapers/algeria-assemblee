@@ -47,13 +47,13 @@ def scrape_page(gender, url)
       term: 7,
       source: URI.join(url, div.css('h3 a/@href').text).to_s,
     }
-    # puts data
     ScraperWiki.save_sqlite([:id, :term], data)
   end
   next_page = noko.css('a[@title="Suivant"]/@href').text
   scrape_page(gender, URI.join(url, next_page)) unless next_page.to_s.empty?
 end
 
-%w(Homme Femme).each do |gender|
-  scrape_page(gender, 'http://www.apn.dz/fr/les-membres?sort=link_name&task=listall&cf38=%s' % gender)
+GENDER = { 'Homme' => 'male', 'Femme' => 'female' }
+GENDER.each do |fr, en|
+  scrape_page(en, 'http://www.apn.dz/fr/les-membres?sort=link_name&task=listall&cf38=%s' % fr)
 end
