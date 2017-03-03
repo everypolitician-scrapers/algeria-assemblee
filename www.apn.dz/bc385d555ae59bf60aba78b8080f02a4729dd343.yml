@@ -29,7 +29,7 @@ response:
     - ASP.NET
     - PHP/5.3.27
     Set-Cookie:
-    - a7d2f09f61ffc71c282d851cc410193b=4t5s3ksqi65m9tofstntke1o73; path=/
+    - a7d2f09f61ffc71c282d851cc410193b=f18vbra0b3eupru3rk3cilq1s2; path=/
     - com_mtree_mfields_searchFieldValue_38=%22Homme%22
     - com_mtree_mfields_searchFieldValue_38=%22Homme%22
     X-Logged-In:
@@ -39,10 +39,10 @@ response:
     X-Content-Encoded-By:
     - Joomla! 2.5
     Date:
-    - Thu, 02 Mar 2017 02:00:18 GMT
+    - Fri, 03 Mar 2017 22:55:05 GMT
     Content-Length:
     - '22820'
   body:
     encoding: ASCII-8BIT
   http_version: 
-recorded_at: Thu, 02 Mar 2017 01:56:48 GMT
+recorded_at: Fri, 03 Mar 2017 22:51:34 GMT
