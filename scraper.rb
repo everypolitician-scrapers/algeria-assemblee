@@ -39,7 +39,7 @@ def scrape_page(gender, url)
       term:    7,
       source:  URI.join(url, div.css('h3 a/@href').text).to_s,
     }
-    ScraperWiki.save_sqlite(%i(id term), data)
+    ScraperWiki.save_sqlite(%i[id term], data)
   end
   next_page = noko.css('a[@title="Suivant"]/@href').text
   scrape_page(gender, URI.join(url, next_page)) unless next_page.to_s.empty?
