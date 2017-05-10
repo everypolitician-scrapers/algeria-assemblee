@@ -45,7 +45,7 @@ def scrape_page(gender, url)
   scrape_page(gender, URI.join(url, next_page)) unless next_page.to_s.empty?
 end
 
-ScraperWiki.sqliteexecute('DELETE FROM data') rescue nil
+ScraperWiki.sqliteexecute('DROP TABLE data') rescue nil
 GENDER = { 'Homme' => 'male', 'Femme' => 'female' }.freeze
 GENDER.each do |fr, en|
   scrape_page(en, 'http://www.apn.dz/fr/les-membres?sort=link_name&task=listall&cf38=%s' % fr)
